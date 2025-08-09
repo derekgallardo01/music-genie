@@ -1,0 +1,795 @@
+{
+  "metadata": {
+    "app_name": "Music Genie",
+    "version": "2.1.0",
+    "generated_at": "2025-08-08T19:51:59.372920",
+    "description": "AI-powered music generation platform with FastAPI backend and Next.js frontend",
+    "architecture": "Full-stack application with PostgreSQL database",
+    "tech_stack": {
+      "backend": [
+        "FastAPI",
+        "SQLAlchemy",
+        "PostgreSQL",
+        "PyTorch",
+        "AudioCraft"
+      ],
+      "frontend": [
+        "Next.js 15",
+        "React 19",
+        "TypeScript",
+        "Tailwind CSS",
+        "Framer Motion"
+      ],
+      "database": [
+        "PostgreSQL",
+        "SQLAlchemy ORM"
+      ],
+      "ai_ml": [
+        "MusicGen",
+        "PyTorch",
+        "torchaudio"
+      ]
+    },
+    "project_structure": {
+      "backend/": "FastAPI application and database",
+      "frontend/": "Next.js application",
+      "docs/": "Documentation and scripts",
+      "audio/": "Generated audio files storage"
+    }
+  },
+  "database_schema": {
+    "connection_status": "not_connected",
+    "note": "Schema based on code analysis",
+    "tables": {
+      "music_generations": {
+        "description": "Main table for storing music generation records",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "primary_key": true,
+            "nullable": false
+          },
+          {
+            "name": "generation_id",
+            "type": "VARCHAR(100)",
+            "primary_key": false,
+            "nullable": false,
+            "unique": true
+          },
+          {
+            "name": "prompt",
+            "type": "TEXT",
+            "primary_key": false,
+            "nullable": false
+          },
+          {
+            "name": "status",
+            "type": "VARCHAR(20)",
+            "primary_key": false,
+            "nullable": false
+          },
+          {
+            "name": "device",
+            "type": "VARCHAR(50)",
+            "primary_key": false,
+            "nullable": false
+          },
+          {
+            "name": "precision",
+            "type": "VARCHAR(20)",
+            "primary_key": false,
+            "nullable": false
+          },
+          {
+            "name": "generation_time",
+            "type": "FLOAT",
+            "primary_key": false,
+            "nullable": false
+          },
+          {
+            "name": "realtime_factor",
+            "type": "FLOAT",
+            "primary_key": false,
+            "nullable": false
+          },
+          {
+            "name": "file_path",
+            "type": "VARCHAR(500)",
+            "primary_key": false,
+            "nullable": true
+          },
+          {
+            "name": "audio_url",
+            "type": "VARCHAR(500)",
+            "primary_key": false,
+            "nullable": true
+          },
+          {
+            "name": "file_size_mb",
+            "type": "FLOAT",
+            "primary_key": false,
+            "nullable": false
+          },
+          {
+            "name": "duration",
+            "type": "FLOAT",
+            "primary_key": false,
+            "nullable": false
+          },
+          {
+            "name": "sample_rate",
+            "type": "INTEGER",
+            "primary_key": false,
+            "nullable": false
+          },
+          {
+            "name": "play_count",
+            "type": "INTEGER",
+            "primary_key": false,
+            "nullable": false
+          },
+          {
+            "name": "download_count",
+            "type": "INTEGER",
+            "primary_key": false,
+            "nullable": false
+          },
+          {
+            "name": "is_favorited",
+            "type": "BOOLEAN",
+            "primary_key": false,
+            "nullable": false
+          },
+          {
+            "name": "last_played",
+            "type": "TIMESTAMP",
+            "primary_key": false,
+            "nullable": true
+          },
+          {
+            "name": "created_at",
+            "type": "TIMESTAMP",
+            "primary_key": false,
+            "nullable": false
+          },
+          {
+            "name": "updated_at",
+            "type": "TIMESTAMP",
+            "primary_key": false,
+            "nullable": true
+          }
+        ]
+      },
+      "users": {
+        "description": "User accounts and preferences",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "primary_key": true,
+            "nullable": false
+          },
+          {
+            "name": "username",
+            "type": "VARCHAR(50)",
+            "primary_key": false,
+            "nullable": false
+          },
+          {
+            "name": "email",
+            "type": "VARCHAR(100)",
+            "primary_key": false,
+            "nullable": true
+          },
+          {
+            "name": "created_at",
+            "type": "TIMESTAMP",
+            "primary_key": false,
+            "nullable": false
+          },
+          {
+            "name": "preferred_device",
+            "type": "VARCHAR(20)",
+            "primary_key": false,
+            "nullable": false
+          }
+        ]
+      },
+      "usage_stats": {
+        "description": "Daily usage statistics and analytics",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "primary_key": true,
+            "nullable": false
+          },
+          {
+            "name": "date",
+            "type": "TIMESTAMP",
+            "primary_key": false,
+            "nullable": false
+          },
+          {
+            "name": "total_generations",
+            "type": "INTEGER",
+            "primary_key": false,
+            "nullable": false
+          },
+          {
+            "name": "successful_generations",
+            "type": "INTEGER",
+            "primary_key": false,
+            "nullable": false
+          },
+          {
+            "name": "avg_generation_time",
+            "type": "FLOAT",
+            "primary_key": false,
+            "nullable": false
+          }
+        ]
+      },
+      "system_metrics": {
+        "description": "System performance monitoring",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "primary_key": true,
+            "nullable": false
+          },
+          {
+            "name": "timestamp",
+            "type": "TIMESTAMP",
+            "primary_key": false,
+            "nullable": false
+          },
+          {
+            "name": "cpu_usage",
+            "type": "FLOAT",
+            "primary_key": false,
+            "nullable": true
+          },
+          {
+            "name": "memory_usage",
+            "type": "FLOAT",
+            "primary_key": false,
+            "nullable": true
+          },
+          {
+            "name": "gpu_usage",
+            "type": "FLOAT",
+            "primary_key": false,
+            "nullable": true
+          }
+        ]
+      }
+    },
+    "schema_consistency": {
+      "verified_fields": [
+        "device",
+        "generation_time"
+      ],
+      "removed_legacy_fields": [
+        "device_used",
+        "total_time"
+      ],
+      "status": "\u2705 Schema is consistent and migrated"
+    }
+  },
+  "api_endpoints": {
+    "base_url": "http://localhost:8000",
+    "api_version": "2.1.0",
+    "authentication": "None (public API)",
+    "content_type": "application/json",
+    "endpoints": {
+      "POST /generate": {
+        "description": "Generate new music from text prompt",
+        "rate_limit": "10 requests per minute",
+        "parameters": {
+          "prompt": {
+            "type": "string",
+            "required": true,
+            "description": "Text description of music to generate",
+            "example": "A relaxing jazz melody with piano"
+          },
+          "duration": {
+            "type": "float",
+            "required": false,
+            "default": 30.0,
+            "description": "Duration in seconds (5-120)",
+            "example": 30.0
+          },
+          "device": {
+            "type": "string",
+            "required": false,
+            "default": "auto",
+            "description": "Device to use (auto/CPU/CUDA/MPS)",
+            "example": "CUDA"
+          },
+          "precision": {
+            "type": "string",
+            "required": false,
+            "default": "float32",
+            "description": "Model precision (float32/float16)",
+            "example": "float32"
+          }
+        },
+        "response": {
+          "success": "boolean",
+          "generation_id": "string",
+          "audio_url": "string",
+          "device": "string",
+          "generation_time": "float",
+          "file_size_mb": "float",
+          "realtime_factor": "float",
+          "created_at": "string (ISO datetime)"
+        }
+      },
+      "GET /recent": {
+        "description": "Get recent music generations",
+        "rate_limit": "30 requests per minute",
+        "parameters": {
+          "limit": {
+            "type": "integer",
+            "required": false,
+            "default": 10,
+            "description": "Number of generations to return (1-100)",
+            "example": 20
+          }
+        },
+        "response": {
+          "success": "boolean",
+          "data": "array of generation objects"
+        }
+      },
+      "GET /most-played": {
+        "description": "Get most played music generations",
+        "rate_limit": "30 requests per minute",
+        "parameters": {
+          "limit": {
+            "type": "integer",
+            "required": false,
+            "default": 10,
+            "description": "Number of generations to return"
+          }
+        }
+      },
+      "GET /search": {
+        "description": "Search generations by prompt text",
+        "rate_limit": "20 requests per minute",
+        "parameters": {
+          "q": {
+            "type": "string",
+            "required": true,
+            "description": "Search query",
+            "example": "jazz piano"
+          },
+          "limit": {
+            "type": "integer",
+            "required": false,
+            "default": 50,
+            "description": "Number of results (1-100)"
+          }
+        }
+      },
+      "GET /stats": {
+        "description": "Get generation statistics and analytics",
+        "rate_limit": "20 requests per minute",
+        "parameters": {
+          "days": {
+            "type": "integer",
+            "required": false,
+            "default": 7,
+            "description": "Number of days to analyze (1-365)"
+          }
+        }
+      },
+      "POST /track-play": {
+        "description": "Track when a user plays a generation",
+        "rate_limit": "100 requests per minute",
+        "parameters": {
+          "generation_id": {
+            "type": "string",
+            "required": true,
+            "description": "ID of the generation"
+          },
+          "play_duration": {
+            "type": "float",
+            "required": false,
+            "description": "Duration played in seconds"
+          }
+        }
+      },
+      "POST /favorite": {
+        "description": "Toggle favorite status of a generation",
+        "rate_limit": "60 requests per minute",
+        "parameters": {
+          "generation_id": {
+            "type": "string",
+            "required": true,
+            "description": "ID of the generation to toggle"
+          }
+        },
+        "response": {
+          "success": "boolean",
+          "is_favorited": "boolean"
+        }
+      },
+      "POST /download/{generation_id}": {
+        "description": "Download a generated audio file",
+        "rate_limit": "30 requests per minute",
+        "parameters": {
+          "generation_id": {
+            "type": "string",
+            "required": true,
+            "description": "ID of generation to download"
+          }
+        },
+        "response": "Audio file (WAV format)"
+      },
+      "GET /health": {
+        "description": "Get system health status",
+        "rate_limit": "60 requests per minute",
+        "response": {
+          "status": "string (healthy/warning/critical)",
+          "components": "object with system component statuses"
+        }
+      },
+      "GET /model/status": {
+        "description": "Get AI model loading status",
+        "rate_limit": "10 requests per minute",
+        "response": {
+          "loaded": "boolean",
+          "device": "string",
+          "gpu_available": "boolean",
+          "model_type": "string"
+        }
+      },
+      "POST /model/reload": {
+        "description": "Reload the AI model",
+        "rate_limit": "2 requests per minute",
+        "response": {
+          "success": "boolean",
+          "message": "string",
+          "device": "string"
+        }
+      }
+    }
+  },
+  "frontend_structure": {
+    "framework": "Next.js 15 with React 19",
+    "language": "TypeScript",
+    "styling": "Tailwind CSS",
+    "build_tool": "Next.js built-in",
+    "package_manager": "npm",
+    "key_directories": {
+      "app/": "Next.js 13+ App Router pages",
+      "components/": "React components",
+      "types/": "TypeScript type definitions",
+      "utils/": "Utility functions and configurations",
+      "hooks/": "Custom React hooks",
+      "public/": "Static assets"
+    },
+    "key_files": {
+      "app/page.tsx": "Main application page with tab navigation",
+      "app/layout.tsx": "Root layout with fonts and metadata",
+      "components/tabs/": "Tab components (Generate, History, Stats, Popular)",
+      "components/audio/": "Audio playback components",
+      "components/ui/": "UI components (navigation, error boundaries)",
+      "types/index.ts": "Main TypeScript type definitions",
+      "utils/config.ts": "Environment-aware configuration",
+      "utils/api.ts": "API communication layer",
+      "package.json": "Dependencies and scripts"
+    },
+    "dependencies": {
+      "core": {
+        "next": "15.4.4",
+        "react": "19.1.0",
+        "react-dom": "19.1.0",
+        "typescript": "^5"
+      },
+      "styling": {
+        "tailwindcss": "^4",
+        "@tailwindcss/postcss": "^4"
+      },
+      "ui_ux": {
+        "framer-motion": "^12.23.9",
+        "lucide-react": "^0.526.0"
+      },
+      "audio": {
+        "wavesurfer.js": "^7.10.1",
+        "tone": "^15.1.22"
+      },
+      "state": {
+        "zustand": "^5.0.6"
+      }
+    },
+    "configuration": {
+      "environment_variables": [
+        "NEXT_PUBLIC_API_URL",
+        "NEXT_PUBLIC_ENVIRONMENT",
+        "NEXT_PUBLIC_DEBUG_MODE",
+        "NEXT_PUBLIC_ANIMATIONS_ENABLED",
+        "NEXT_PUBLIC_MAX_RECENT_TRACKS"
+      ],
+      "build_scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+      }
+    }
+  },
+  "backend_structure": {
+    "framework": "FastAPI",
+    "language": "Python 3.8+",
+    "database": "PostgreSQL with SQLAlchemy ORM",
+    "ai_framework": "PyTorch with AudioCraft/MusicGen",
+    "key_files": {
+      "main.py": "FastAPI application with all endpoints and model loading",
+      "database/": {
+        "models.py": "SQLAlchemy database models with consistent field names",
+        "operations.py": "Database operation functions and queries",
+        "database.py": "Database connection, session management, and configuration",
+        "__init__.py": "Database module exports and imports"
+      },
+      "setup_database.py": "Database initialization and table creation script",
+      "test_db.py": "Database testing and verification utilities"
+    },
+    "database_models": {
+      "MusicGeneration": {
+        "description": "Main table for storing music generation records",
+        "key_fields": [
+          "generation_id (unique identifier)",
+          "prompt (user input text)",
+          "device (CPU/CUDA/MPS)",
+          "generation_time (processing time)",
+          "file_size_mb (calculated from actual file)",
+          "play_count, download_count (user interactions)",
+          "is_favorited (user preference)"
+        ],
+        "relationships": "None (standalone for now)"
+      },
+      "User": {
+        "description": "User accounts and preferences",
+        "key_fields": [
+          "username, email (identification)",
+          "preferred_device (user preference)",
+          "created_at (registration date)"
+        ]
+      },
+      "UsageStats": {
+        "description": "Daily usage statistics for analytics",
+        "key_fields": [
+          "date (statistics date)",
+          "total_generations, successful_generations",
+          "avg_generation_time, avg_realtime_factor"
+        ]
+      },
+      "SystemMetrics": {
+        "description": "System performance monitoring",
+        "key_fields": [
+          "timestamp (measurement time)",
+          "cpu_usage, memory_usage, gpu_usage",
+          "model_loaded, active_generations"
+        ]
+      }
+    },
+    "core_dependencies": {
+      "web_framework": [
+        "fastapi",
+        "uvicorn",
+        "slowapi"
+      ],
+      "database": [
+        "sqlalchemy",
+        "psycopg2-binary"
+      ],
+      "ai_ml": [
+        "torch",
+        "torchaudio",
+        "audiocraft"
+      ],
+      "utilities": [
+        "python-multipart",
+        "psutil"
+      ]
+    },
+    "api_features": {
+      "middleware": [
+        "CORS",
+        "Rate Limiting",
+        "Request Logging"
+      ],
+      "validation": [
+        "Pydantic models",
+        "Input sanitization"
+      ],
+      "error_handling": [
+        "Comprehensive try/catch",
+        "Proper HTTP status codes"
+      ],
+      "monitoring": [
+        "Health checks",
+        "System metrics"
+      ]
+    }
+  },
+  "environment_config": {
+    "database": {
+      "DATABASE_URL": {
+        "description": "PostgreSQL connection string",
+        "example": "postgresql://music_user:password@localhost:5432/music_genie",
+        "required": true
+      }
+    },
+    "backend": {
+      "AUDIO_DIR": {
+        "description": "Directory for storing generated audio files",
+        "example": "/path/to/audio/files",
+        "default": "./audio"
+      },
+      "MODEL_CACHE_DIR": {
+        "description": "Directory for caching AI models",
+        "example": "/tmp/musicgen_cache",
+        "default": "/tmp/musicgen_cache"
+      },
+      "ENVIRONMENT": {
+        "description": "Environment type (affects logging and performance)",
+        "options": [
+          "development",
+          "staging",
+          "production"
+        ],
+        "default": "development"
+      },
+      "DEBUG": {
+        "description": "Enable debug mode with verbose logging",
+        "options": [
+          "true",
+          "false"
+        ],
+        "default": "true"
+      }
+    },
+    "frontend": {
+      "NEXT_PUBLIC_API_URL": {
+        "description": "Backend API base URL",
+        "example": "http://localhost:8000",
+        "required": true
+      },
+      "NEXT_PUBLIC_ENVIRONMENT": {
+        "description": "Frontend environment (affects behavior)",
+        "options": [
+          "development",
+          "staging",
+          "production"
+        ],
+        "default": "development"
+      },
+      "NEXT_PUBLIC_DEBUG_MODE": {
+        "description": "Enable frontend debug logging",
+        "options": [
+          "true",
+          "false"
+        ],
+        "default": "true"
+      },
+      "NEXT_PUBLIC_MAX_RECENT_TRACKS": {
+        "description": "Maximum number of recent tracks to display",
+        "type": "integer",
+        "default": 50
+      }
+    },
+    "optional_performance": {
+      "GPU_MEMORY_LIMIT": {
+        "description": "GPU memory limit in MB",
+        "type": "integer",
+        "example": 8192
+      },
+      "ENABLE_MODEL_OPTIMIZATION": {
+        "description": "Enable model optimization techniques",
+        "options": [
+          "true",
+          "false"
+        ],
+        "default": "true"
+      }
+    }
+  },
+  "sample_data": {
+    "status": "database_not_available"
+  },
+  "dependencies": {
+    "python_backend": {
+      "fastapi": "latest",
+      "uvicorn": "latest",
+      "sqlalchemy": "2.0+",
+      "psycopg2-binary": "latest",
+      "torch": "2.0+",
+      "torchaudio": "2.0+",
+      "audiocraft": "latest",
+      "slowapi": "latest",
+      "psutil": "latest"
+    },
+    "nodejs_frontend": {
+      "next": "15.4.4",
+      "react": "19.1.0",
+      "react-dom": "19.1.0",
+      "typescript": "^5",
+      "tailwindcss": "^4",
+      "framer-motion": "^12.23.9",
+      "zustand": "^5.0.6"
+    },
+    "system_requirements": {
+      "python": "3.8+ (tested on 3.9, 3.10, 3.11)",
+      "node": "18+ (tested on 18.x, 20.x)",
+      "postgresql": "13+ (tested on 13, 14, 15)",
+      "gpu": "Optional (CUDA 11.8+ or Apple Silicon MPS)"
+    },
+    "recommended_specs": {
+      "ram": "8GB+ (16GB recommended for large models)",
+      "storage": "10GB+ free space",
+      "gpu_memory": "4GB+ VRAM (optional, for faster generation)"
+    }
+  },
+  "deployment_info": {
+    "development": {
+      "backend": {
+        "command": "python main.py",
+        "url": "http://localhost:8000",
+        "requirements": "PostgreSQL running locally"
+      },
+      "frontend": {
+        "command": "npm run dev",
+        "url": "http://localhost:3000",
+        "requirements": "Node.js 18+"
+      }
+    },
+    "production_considerations": {
+      "backend": {
+        "deployment": "Use uvicorn with multiple workers",
+        "command": "uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4",
+        "database": "Managed PostgreSQL service (AWS RDS, Google Cloud SQL)",
+        "security": "Set proper CORS origins, use HTTPS, environment variables",
+        "monitoring": "Health checks, logging, performance metrics"
+      },
+      "frontend": {
+        "deployment": "Static build deployment",
+        "command": "npm run build && npm start",
+        "hosting": "Vercel, Netlify, or any static hosting",
+        "cdn": "Use CDN for faster asset delivery"
+      }
+    },
+    "docker_ready": false,
+    "cloud_deployment": {
+      "backend_options": [
+        "Railway (recommended for simplicity)",
+        "Heroku (easy deployment)",
+        "AWS EC2/ECS (full control)",
+        "Google Cloud Run (serverless)"
+      ],
+      "frontend_options": [
+        "Vercel (recommended for Next.js)",
+        "Netlify (good for static sites)",
+        "AWS S3 + CloudFront",
+        "Google Cloud Storage"
+      ],
+      "database_options": [
+        "AWS RDS PostgreSQL",
+        "Google Cloud SQL",
+        "Azure Database for PostgreSQL",
+        "Railway PostgreSQL"
+      ]
+    },
+    "estimated_costs": {
+      "development": "$0 (local)",
+      "small_production": "$20-50/month",
+      "medium_production": "$100-300/month",
+      "large_scale": "$500+/month"
+    }
+  }
+}
